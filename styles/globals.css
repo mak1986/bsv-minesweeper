@@ -1,16 +1,40 @@
-html,
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  background: black;
+  color: #DDDDDD;
+  font-family: courier new;
+  text-align: center;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+h1 {
+  text-align: center;
+  font-size: 14pt;
+  font-weight: normal;
+}
+#grid {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-* {
-  box-sizing: border-box;
+#grid tr td{
+  border:1px solid white;
+  background: #999999;
+  width: 25px;
+  height: 25px;
+  text-align: center;
+}
+
+#grid tr td.clicked {
+    background: #333333;
+}
+
+#grid tr td.wrong {
+    background: #FF0000;
+}
+
+#grid tr td.correct {
+  background: #00FF00;
+}
+
+button {
+  margin: 12px;
 }
