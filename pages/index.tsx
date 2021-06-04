@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import network from 'utils/network'
 
 const bomb = '💣'
@@ -9,7 +9,24 @@ const checkMark = '✔️'
 
 export default function Home() {
 
+  const relayxButtonRef = useRef()
   const [grid, setGrid] = useState<any>()
+
+
+
+  useEffect(() => {
+
+    if (relayxButtonRef && relayxButtonRef.current) {
+      (window as any).relayone.render(relayxButtonRef.current, {
+        to: "[1handle, address, paymail, or script]",
+        amount: 10,
+        currency: "USD",
+        devMode: true
+      })
+    }
+
+  }, [relayxButtonRef])
+
 
   const generateGrid = async () => {
     const { data } = await network.post<{ grid: any }>('/grids', {})
@@ -74,6 +91,7 @@ export default function Home() {
         <title>BSV Minesweeper</title>
         <meta name="description" content="BSV Minesweeper" />
         <link rel="icon" href="/favicon.ico" />
+        <script src="https://one.relayx.io/relayone.js"></script>
       </Head>
 
       <h1>Minesweeper</h1>
@@ -98,6 +116,7 @@ export default function Home() {
           <p>{flag}</p>
           <p style={{ color: 'white' }}>{grid.flags}/{grid.mines}</p>
         </div>}
+        <div ref={relayxButtonRef} id="relayx-button"></div>
       </div>
 
       <button onClick={() => generateGrid()}>Reset Grid</button>
