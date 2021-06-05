@@ -61,6 +61,8 @@ const AuthProvider = ({ children }) => {
     const generatePrivateKey = (str: string) => {
         // You can see how big N is here...
         // https://en.bitcoin.it/wiki/Secp256k1
+        // Or you can use bip32 as reference
+        // https://github.com/moneybutton/bsv/blob/master/lib/bip-32.js#L91 then use derive to get a key
         const N = bsv.Point.getN()
         let n = 1
         let sha256: string, bn: any, condition: boolean

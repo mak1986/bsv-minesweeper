@@ -172,9 +172,7 @@ const Game = () => {
                 </div>}
             </div>}
 
-            {/* <div ref={relayxButtonRef} id="relayx-button"></div> */}
-
-            {isAuthenticated && grid.result && <button className="button is-dark" onClick={async () => await reset()}>Reset Grid</button>}
+            {isAuthenticated && grid && grid.result && <button className="button is-dark" onClick={async () => await reset()}>Reset Grid</button>}
 
         </div>
     )
