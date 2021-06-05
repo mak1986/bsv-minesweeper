@@ -1,6 +1,6 @@
 import { ObjectId } from 'mongodb'
 import { connectToDatabase } from './mongodb'
-import { clickCell, flagCell, generateGrid } from './minesweeper'
+import { timeOutGrid, clickCell, flagCell, generateGrid } from './minesweeper'
 
 let db
 
@@ -13,11 +13,17 @@ const getDb = async () => {
     return db
 }
 
-export const createGrid = async () => {
+export const getMockGrid = ()=>{
+    return generateGrid(false)
+}
+
+export const createGrid = async ({row, col}: {row: number, col: number}) => {
     const db = await getDb()
+console.log(row, col)
 
+    const initialClick = {row, col}
 
-    const grid = generateGrid()
+    const grid = generateGrid(true, initialClick)
 
     const res = await db.collection('grids').insertOne(grid)
 
@@ -54,6 +60,16 @@ export const flag = async (id: string, row: number, col: number) => {
     const grid = await getGrid(id)
 
     flagCell(grid, row, col)
+
+    await updateGrid(grid)
+
+    return await getGrid(grid._id)
+}
+
+export const timeOut = async (id: string) => {
+    const grid = await getGrid(id)
+
+    timeOutGrid(grid)
 
     await updateGrid(grid)
 

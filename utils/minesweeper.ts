@@ -3,7 +3,7 @@ const numberOfColumns = 8
 const numberOfMines = 10
 
 
-export const generateGrid = () => {
+export const generateGrid = (includeMines: boolean, initialClick?: { row: number, col: number }) => {
     const rows = []
 
     for (let i = 0; i < numberOfRows; i++) {
@@ -29,16 +29,19 @@ export const generateGrid = () => {
         mines: numberOfMines
     }
 
-    addMines(grid)
+    if (includeMines) {
+        addMines(grid, initialClick)
+        clickCell(grid, initialClick.row, initialClick.col)
+    }
 
     return grid
 }
 
-const updateNumberOfFlags = (grid)=>{
+const updateNumberOfFlags = (grid) => {
     let count = 0
     for (let i = 0; i < numberOfRows; i++) {
         for (let j = 0; j < numberOfColumns; j++) {
-            if(grid.rows[i][j].flaged){
+            if (grid.rows[i][j].flaged) {
                 count++
             }
         }
@@ -46,19 +49,22 @@ const updateNumberOfFlags = (grid)=>{
     grid.flags = count
 }
 
-const addMines = (grid: any) => {
+const addMines = (grid: any, initialClick: { row: number, col: number }) => {
     //Add mines randomly
     let n = numberOfMines
     while (n > 0) {
         let row = Math.floor(Math.random() * numberOfRows);
         let col = Math.floor(Math.random() * numberOfColumns);
 
-        const cell = grid.rows[row][col]
+        if (!(row === initialClick.row && col === initialClick.col)) {
+            const cell = grid.rows[row][col]
 
-        if (!cell.mine) {
-            cell.mine = true
-            n--
+            if (!cell.mine) {
+                cell.mine = true
+                n--
+            }
         }
+
     }
 }
 
@@ -104,7 +110,7 @@ export const clickCell = (grid: any, rowIndex: number, colIndex: number) => {
     console.log(grid)
     const cell = grid.rows[rowIndex][colIndex]
 
-    if(cell.flaged){
+    if (cell.flaged) {
         return
     }
 
@@ -133,4 +139,10 @@ export const clickCell = (grid: any, rowIndex: number, colIndex: number) => {
         }
         checkLevelCompletion(grid);
     }
+}
+
+
+export const timeOutGrid = (grid: any) => {
+    grid.result = 'lost'
+    revealMines(grid)
 }
