@@ -1,4 +1,8 @@
+html {
+  height: 100%;
+}
 body {
+  height: 100%;
   background: black;
   color: #DDDDDD;
   font-family: courier new;
@@ -9,10 +13,6 @@ h1 {
   text-align: center;
   font-size: 14pt;
   font-weight: normal;
-}
-#grid {
-  margin-left: auto;
-  margin-right: auto;
 }
 
 #grid tr td{
@@ -35,6 +35,22 @@ h1 {
   background: #00FF00;
 }
 
-button {
+#grid button {
   margin: 12px;
+}
+
+
+
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white !important;
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: white !important;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: white !important;
 }
