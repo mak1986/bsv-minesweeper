@@ -53,7 +53,8 @@ const AuthProvider = ({ children }) => {
         const runConfig = {
             owner: ownerPrivateKey.toWIF(),
             purse: pursePrivateKey.toWIF(),
-            network: process.env.NEXT_PUBLIC_RUN_NETWORK
+            network: process.env.NEXT_PUBLIC_RUN_NETWORK,
+            trust: '*'
         }
 
         setRun(new (window as any).Run(runConfig))
