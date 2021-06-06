@@ -1,4 +1,4 @@
-import { flag } from 'utils/db'
+import { flag } from 'utils/minesweeper-db-manager'
 
 export default async (req, res) => {
     if (req.method === 'POST') {
