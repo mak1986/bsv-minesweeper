@@ -1,4 +1,4 @@
-import { createGrid } from 'utils/db'
+import { createGrid } from 'utils/minesweeper-db-manager'
 
 export default async (req, res) => {
   if (req.method === 'POST') {

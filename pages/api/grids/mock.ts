@@ -1,4 +1,4 @@
-import { getMockGrid } from 'utils/db'
+import { getMockGrid } from 'utils/minesweeper-db-manager'
 
 export default async (req, res) => {
     if (req.method === 'GET') {

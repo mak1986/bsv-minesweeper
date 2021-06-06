@@ -22,8 +22,8 @@ export default function Home() {
           <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
           <link rel="icon" href="/favicon.ico" />
           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" />
-          <script src="https://unpkg.com/bsv@2.0.7"></script>
-          <script src="https://unpkg.com/run-sdk"></script>
+          <script src="/bsv.browser.min.js"></script>
+          <script src="/run.browser.min.js"></script>
           <script src="https://one.relayx.io/relayone.js"></script>
         </Head>
 

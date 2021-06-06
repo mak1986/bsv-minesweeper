@@ -3,12 +3,12 @@ import { useContext, useEffect, useRef, useState } from "react"
 
 import { useInterval } from 'rooks';
 
-const bsv = require('bsv')
+// const bsv = require('../node_modules/run-sdk/dist/bsv.browser.min.js')
 
-const Wallet = () => {
+const WalletPanel = () => {
 
     const relayxButtonRef = useRef()
-    const { isProd, balance, refreshBalance, purse } = useContext(AuthContext)
+    const { balance, refreshBalance, purse } = useContext(AuthContext)
 
     const [startRefreshBalance, stopRefreshBalance] = useInterval(() => {
         console.log('refresh', balance)
@@ -37,9 +37,15 @@ const Wallet = () => {
 
     useEffect(() => {
         if (purse) {
-            setAddress(bsv.Address.fromPrivKey(purse).toString())
-            setPublicKey(bsv.PubKey.fromPrivKey(purse).toHex())
-            setPrivateKey(purse.toWif())
+            const bsv = (window as any).bsv
+            setAddress(
+                bsv.Address.fromPrivateKey(purse, process.env.NEXT_PUBLIC_BSV_NETWORK).toString()
+                //isProd
+                //? bsv.Address.fromPrivKey(purse).toString()
+                //: bsv.Address.Testnet.fromPrivKey(purse).toString()
+            )
+            setPublicKey(bsv.PublicKey.fromPrivateKey(purse).toHex()) //bsv.PubKey.fromPrivKey(purse).toHex())
+            setPrivateKey(purse.toWIF())
         }
     }, [purse])
 
@@ -61,7 +67,7 @@ const Wallet = () => {
             editable: true,
             amount: 0.01,
             currency: "USD",
-            devMode: !isProd
+            devMode: process.env.NEXT_PUBLIC_BSV_NETWORK === 'testnet'
         })
     }
 
@@ -102,4 +108,4 @@ const Wallet = () => {
     )
 }
 
-export default Wallet
+export default WalletPanel

@@ -1,4 +1,4 @@
-import { timeOut } from 'utils/db'
+import { timeOut } from 'utils/minesweeper-db-manager'
 
 export default async (req, res) => {
     if (req.method === 'POST') {

@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb'
+const { MongoClient } = require('mongodb')
 
 const { MONGODB_URI, MONGODB_DB } = process.env
 
@@ -19,13 +19,13 @@ if (!MONGODB_DB) {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
-let cached = (global as any).mongo
+let cached = global.mongo
 
 if (!cached) {
-  cached = (global as any).mongo = { conn: null, promise: null }
+  cached = global.mongo = { conn: null, promise: null }
 }
 
-export const connectToDatabase = async function () {
+const connectToDatabase = async function () {
   if (cached.conn) {
     return cached.conn
   }
@@ -45,4 +45,8 @@ export const connectToDatabase = async function () {
   }
   cached.conn = await cached.promise
   return cached.conn
+}
+
+module.exports = {
+  connectToDatabase
 }

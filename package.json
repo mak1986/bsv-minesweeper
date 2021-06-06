@@ -13,7 +13,6 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "axios": "^0.21.1",
-    "bsv": "^2.0.10-beta1",
     "buffer": "^6.0.3",
     "mongodb": "^3.6.9",
     "next": "10.2.3",
