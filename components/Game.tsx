@@ -1,4 +1,5 @@
 import { AuthContext } from 'context/Auth'
+import mitt from 'next/dist/next-server/lib/mitt'
 import { useContext, useEffect, useState } from 'react'
 import { useInterval } from 'rooks'
 import network from 'utils/network'
@@ -111,7 +112,9 @@ const Game = () => {
                 const payload = { row, col }
                 const { data } = await network.post<{ grid: any }>(url, payload)
                 setGrid(data.grid)
-                startTimer()
+                if(data.grid.result === null){
+                    startTimer()
+                }
                 setLoading(false)
             }
         }

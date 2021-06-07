@@ -108,7 +108,6 @@ export const flagCell = (grid: any, rowIndex: number, colIndex: number) => {
 
 export const clickCell = (grid: any, rowIndex: number, colIndex: number) => {
     //Check if the end-user clicked on a mine
-    console.log(grid)
     const cell = grid.rows[rowIndex][colIndex]
 
     if (cell.flaged) {
