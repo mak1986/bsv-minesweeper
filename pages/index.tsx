@@ -31,8 +31,8 @@ export default function Home() {
         <div className="columns">
           <div className="column">
 
-            <h1>BETA - testnet | BSV-Minesweeper</h1>
-            <p className="is-size-7"><span className="has-text-grey">Topup from: </span><a className="has-text-grey has-text-weight-semibold" style={{textDecoration: 'underline'}} href="https://faucet.bitcoincloud.net" target="_blank">https://faucet.bitcoincloud.net</a> </p>
+            <h1>BETA | BSV-Minesweeper</h1>
+            {/* <p className="is-size-7"><span className="has-text-grey">Topup from: </span><a className="has-text-grey has-text-weight-semibold" style={{textDecoration: 'underline'}} href="https://faucet.bitcoincloud.net" target="_blank">https://faucet.bitcoincloud.net</a> </p> */}
           </div>
         </div>
         <div className="columns">

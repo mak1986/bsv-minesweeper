@@ -64,7 +64,7 @@ const WalletPanel = () => {
         relayone.render(relayxButtonRef.current, {
             to: address,
             editable: true,
-            amount: 0.01,
+            amount: 0.1,
             currency: "USD",
             devMode: process.env.NEXT_PUBLIC_BSV_NETWORK === 'testnet'
         })
@@ -72,8 +72,8 @@ const WalletPanel = () => {
 
     return (
         <div>
-            <div className="notification is-warning is-small" style={{fontSize: '12px'}}>
-            <strong>Attention!</strong> BSV-Minesweeper app is in BETA phase. Do not transfer funds from mainnet to this wallet. Use <a className="has-text-grey has-text-weight-semibold" style={{textDecoration: 'underline'}} href="https://faucet.bitcoincloud.net" target="_blank">https://faucet.bitcoincloud.net</a> to topup free BSV on Testnet.</div>
+            {/* <div className="notification is-warning is-small" style={{fontSize: '12px'}}>
+            <strong>Attention!</strong> BSV-Minesweeper app is in BETA phase. Do not transfer funds from mainnet to this wallet. Use <a className="has-text-grey has-text-weight-semibold" style={{textDecoration: 'underline'}} href="https://faucet.bitcoincloud.net" target="_blank">https://faucet.bitcoincloud.net</a> to topup free BSV on Testnet.</div> */}
             <div className="mb-2">
                 <div className="is-flex is-align-items-center is-justify-content-space-between mb-2">
                     <div>
