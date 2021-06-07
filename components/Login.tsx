@@ -10,8 +10,8 @@ const Login = () => {
     const { balance, refreshBalance, email: loggedInEmail, isAuthenticated, authenticate, deauthenticate } = useContext(AuthContext)
 
     const [loading, setLoading] = useState<boolean>()
-    const [email, setEmail] = useState<string>('mak.jacobsen@gmail.com')
-    const [password, setPassword] = useState<string>('1234')
+    const [email, setEmail] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
 
     const login = () => {
         authenticate(email, password)
