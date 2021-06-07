@@ -1,6 +1,8 @@
 
 ## BSV-Minesweeper
 
+The first ever Minesweeper game on the bitcoin network!
+
 Live demo on Mainnet:
 https://www.bsv-minesweeper.makadev.com/
 
