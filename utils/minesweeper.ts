@@ -3,7 +3,7 @@ const numberOfColumns = 8
 const numberOfMines = 10
 
 
-export const generateGrid = (includeMines: boolean, initialClick?: { row: number, col: number }) => {
+export const generateGrid = (includeMines: boolean, initialClick?: { row: number, col: number, location: string }) => {
     const rows = []
 
     for (let i = 0; i < numberOfRows; i++) {
@@ -26,11 +26,12 @@ export const generateGrid = (includeMines: boolean, initialClick?: { row: number
         rows,
         result: null,
         flags: 0,
-        mines: numberOfMines
+        mines: numberOfMines,
+        location: initialClick ? initialClick.location : null
     }
 
     if (includeMines) {
-        addMines(grid, initialClick)
+        addMines(grid, { row: initialClick.row, col: initialClick.col })
         clickCell(grid, initialClick.row, initialClick.col)
     }
 

@@ -11,14 +11,16 @@ const checkMark = '✔️'
 const stopwatch = '⏱️'
 
 const defaultTimer = 1000 * 60 * 2 // 2 minutes
+const satoshis = 100000000
 
 const Game = () => {
 
-    const { isAuthenticated } = useContext(AuthContext)
+    const { run, balance, refreshBalance, createPurchaseGame, gameFactoryJig, isAuthenticated } = useContext(AuthContext)
+
+
+    const [loading, setLoading] = useState<boolean>()
     const [grid, setGrid] = useState<any>()
-
     const [isMock, setIsMock] = useState<boolean>(true)
-
     const [timer, setTimer] = useState<number>(defaultTimer)
 
     const [startTimer, stopTimer] = useInterval(() => {
@@ -41,14 +43,45 @@ const Game = () => {
 
     useEffect(() => {
         if (grid && grid.result) {
+
+            if (grid.result === 'won') {
+                claimReward(grid.location)
+            }
+
             stopTimer()
         }
     }, [grid])
 
+
+    const claimReward = async (location: string) => {
+        const game = await run.load(location)
+    
+        await game.sync()
+        await game.withdraw()
+        await game.sync()
+
+        refreshBalance()
+    }
+
     const startGame = async (row: number, col: number) => {
-        await generateGrid(row, col)
-        setIsMock(false)
-        startTimer()
+        const price = (gameFactoryJig.priceSatoshis + 600) / satoshis
+        console.log(balance, price, balance >= price)
+        if (balance >= price) {
+            try {
+                setLoading(true)
+                await generateGrid(row, col)
+                setIsMock(false)
+                startTimer()
+                setLoading(false)
+                refreshBalance()
+            } catch (err) {
+                setLoading(false)
+                alert(`Something went wrong: ${err}`)
+            }
+
+        } else {
+            alert(`Not enough funds to complete purchase. (${price} BSV)`)
+        }
     }
 
     const setupMockGrid = async () => {
@@ -59,9 +92,12 @@ const Game = () => {
     }
 
     const generateGrid = async (row: number, col: number) => {
-        const { data } = await network.post<{ grid: any }>('/grids', { row, col })
-        console.log(data)
-        setGrid(data.grid)
+
+        const grid = await createPurchaseGame(row, col)
+
+        // const { data } = await network.post<{ grid: any }>('/grids', { row, col, location: purchase.location })
+        // console.log(data)
+        setGrid(grid)
     }
 
     const leftClick = async (row: number, col: number) => {
@@ -69,10 +105,14 @@ const Game = () => {
             if (isMock) {
                 await startGame(row, col)
             } else {
+                stopTimer()
+                setLoading(true)
                 const url = `/grids/${grid._id}/click`
                 const payload = { row, col }
                 const { data } = await network.post<{ grid: any }>(url, payload)
                 setGrid(data.grid)
+                startTimer()
+                setLoading(false)
             }
         }
     }
@@ -138,22 +178,26 @@ const Game = () => {
     }
     return (
         <div id="grid">
-            <table>
-                <tbody>
-                    {grid && grid.rows.map((row, rowKey) => <tr key={rowKey}>
-                        {row.map((col, colKey) => <td
-                            style={{ cursor: isAuthenticated ? 'pointer' : 'not-allowed' }}
-                            key={colKey}
-                            onContextMenu={(e: any) => rightClick(e, rowKey, colKey)}
-                            onClick={() => leftClick(rowKey, colKey)}
-                            className={(grid.result !== null && col.flaged && col.value !== bomb ? 'wrong' : '') + ' ' + (grid.result !== null && col.flaged && col.value === bomb ? 'correct' : '') + ' ' + (col.clicked ? 'clicked' : '')}>
-                            {renderCell(grid.result, col)}
-                        </td>)}
-                    </tr>)}
-                </tbody>
+            {isAuthenticated && gameFactoryJig && <div className="has-text-white mb-2">
+                <p className="">{gameFactoryJig.priceSatoshis / satoshis} BSV per game</p>
+                <p className="is-size-7">Reward {(0.9 * (gameFactoryJig.priceSatoshis / satoshis)).toFixed(5)} BSV</p></div>}
+            <div className="is-flex is-justify-content-center">
+                <table>
+                    <tbody>
+                        {grid && grid.rows.map((row, rowKey) => <tr key={rowKey}>
+                            {row.map((col, colKey) => <td
+                                style={{ cursor: isAuthenticated ? 'pointer' : 'not-allowed' }}
+                                key={colKey}
+                                onContextMenu={(e: any) => rightClick(e, rowKey, colKey)}
+                                onClick={() => leftClick(rowKey, colKey)}
+                                className={(grid.result !== null && col.flaged && col.value !== bomb ? 'wrong' : '') + ' ' + (grid.result !== null && col.flaged && col.value === bomb ? 'correct' : '') + ' ' + (col.clicked ? 'clicked' : '')}>
+                                {renderCell(grid.result, col)}
+                            </td>)}
+                        </tr>)}
+                    </tbody>
 
-            </table>
-
+                </table>
+            </div>
             {grid && <div className="mt-5">
                 <div className="is-flex is-justify-content-space-around">
                     <div>
@@ -173,7 +217,17 @@ const Game = () => {
             </div>}
 
             {isAuthenticated && grid && grid.result && <button className="button is-dark" onClick={async () => await reset()}>Reset Grid</button>}
+            {loading && <p className="mt-2" style={{height: '50px'}}>Loading please wait...</p>}
 
+            {isAuthenticated && gameFactoryJig && <div className="has-text-left mt-5 is-size-7">
+                <p>Information:</p>
+                <ol style={{ marginLeft: '20px' }}>
+                    <li>Each mine in the game is a NFT (non fungible token). </li>
+                    <li>A fee of {gameFactoryJig && gameFactoryJig.priceSatoshis / satoshis} BSV will be charged when the game starts.</li>
+                    <li>If the player wins, {(0.9 * (gameFactoryJig.priceSatoshis / satoshis)).toFixed(5)} BSV will be rewarded by the mines.</li>
+                    <li>If the player loses, {(0.9 * (gameFactoryJig.priceSatoshis / satoshis)).toFixed(5)} BSV will be shared between the mines.</li>
+                </ol>
+            </div>}
         </div>
     )
 }

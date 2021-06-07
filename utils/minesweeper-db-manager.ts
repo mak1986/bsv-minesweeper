@@ -13,15 +13,14 @@ const getDb = async () => {
     return db
 }
 
-export const getMockGrid = ()=>{
+export const getMockGrid = () => {
     return generateGrid(false)
 }
 
-export const createGrid = async ({row, col}: {row: number, col: number}) => {
+export const createGrid = async ({ row, col, location }: { row: number, col: number, location: string }) => {
     const db = await getDb()
-console.log(row, col)
 
-    const initialClick = {row, col}
+    const initialClick = { row, col, location }
 
     const grid = generateGrid(true, initialClick)
 
@@ -34,7 +33,6 @@ console.log(row, col)
 export const getGrid = async (id: string) => {
     const db = await getDb()
     const grid = await db.collection('grids').findOne({ _id: new ObjectId(id) })
-    console.log(grid)
     return grid
 }
 

@@ -8,11 +8,10 @@ import { useInterval } from 'rooks';
 const WalletPanel = () => {
 
     const relayxButtonRef = useRef()
-    const { balance, refreshBalance, purse } = useContext(AuthContext)
+    const { refreshBalance, purse } = useContext(AuthContext)
 
     const [startRefreshBalance, stopRefreshBalance] = useInterval(() => {
-        console.log('refresh', balance)
-        refreshBalance();
+        refreshBalance()
     }, 5000);
 
     const [publickKeyIsHidden, setPublicKeyIsHidden] = useState<boolean>(true)
@@ -73,6 +72,8 @@ const WalletPanel = () => {
 
     return (
         <div>
+            <div className="notification is-warning is-small" style={{fontSize: '12px'}}>
+            <strong>Attention!</strong> BSV-Minesweeper app is in BETA phase. Do not transfer funds from mainnet to this wallet. Use <a className="has-text-grey has-text-weight-semibold" style={{textDecoration: 'underline'}} href="https://faucet.bitcoincloud.net" target="_blank">https://faucet.bitcoincloud.net</a> to topup free BSV on Testnet.</div>
             <div className="mb-2">
                 <div className="is-flex is-align-items-center is-justify-content-space-between mb-2">
                     <div>

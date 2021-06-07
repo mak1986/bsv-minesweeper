@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "utils/mongodb.js", "utils/jig-db-manager.js"  ],
   "exclude": [
     "node_modules"
   ]

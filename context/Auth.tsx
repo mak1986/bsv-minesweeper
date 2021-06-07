@@ -20,18 +20,20 @@ const AuthProvider = ({ children }) => {
     const [balance, setBalance] = useState<number>()
 
     // Classes
-    const [_purchase, setPurchaseClass] = useState<any>()
+    // const [_purchase, setPurchaseClass] = useState<any>()
     // const [_mine, setMineClass] = useState<any>()
 
     // Jigs
     const [mineFactoryJig, setMineFactoryJig] = useState<any>()
+    const [gameFactoryJig, setGameFactoryJig] = useState<any>()
 
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
 
 
     useEffect(() => {
         if (run) {
-            // console.log(run)
+            run.activate()
+            console.log(run)
             setupRun()
             refreshBalance()
         }
@@ -40,6 +42,7 @@ const AuthProvider = ({ children }) => {
 
     const authenticate = (email: string, password: string) => {
         const bsv = (window as any).bsv
+
         let str = email.toLowerCase().trim() + ' ' + password.toLowerCase().trim()
 
         let ownerPrivateKey = generatePrivateKey(str + ' owner')
@@ -95,34 +98,37 @@ const AuthProvider = ({ children }) => {
         const { data: instances } = await network.get('/locations/instances')
 
         const {
+            gameFactoryClassLocation,
             mineFactoryClassLocation,
             mineClassLocation,
             purchaseClassLocation
         } = classes
 
-        const { mineFactoryLocation } = instances
+        const { gameFactoryLocation, mineFactoryLocation } = instances
 
-        console.log('run', run)
-        run.activate()
+        // console.log('run', run)
 
+        run.trust(gameFactoryClassLocation.split('_')[0])
         run.trust(mineFactoryClassLocation.split('_')[0])
         run.trust(mineClassLocation.split('_')[0])
         run.trust(purchaseClassLocation.split('_')[0])
 
-        // setMineClass(await run.load(mineClassLocation))
         Purchase = await run.load(purchaseClassLocation)
         Mine = await run.load(mineClassLocation)
-
-        // console.log(Purchase)
-        // setPurchaseClass(await run.load(purchaseClassLocation))
-
-        run.activate()
 
         const _mineFactoryJig = await run.load(mineFactoryLocation)
 
         await _mineFactoryJig.sync()
 
         setMineFactoryJig(_mineFactoryJig)
+
+        const _gameFactoryJig = await run.load(gameFactoryLocation)
+
+        await _gameFactoryJig.sync()
+
+
+        console.log('_gameFactoryJig', _gameFactoryJig)
+        setGameFactoryJig(_gameFactoryJig)
     }
 
     const deauthenticate = () => {
@@ -138,20 +144,20 @@ const AuthProvider = ({ children }) => {
     }
 
 
-    const createPurchase = async () => {
+    const createPurchaseMine = async () => {
         try {
 
-            // console.log(Run, run)
-            run.activate()
+            // run.activate()
             await mineFactoryJig.sync()
-            const buyer = await run.owner.nextOwner()
-            console.log(buyer)
-            const purchase = new Purchase(mineFactoryJig, buyer)
+            const buyer = run.owner.pubkey
+            const owner = mineFactoryJig.owner
+            const price = mineFactoryJig.priceSatoshis
+
+            const purchase = new Purchase(owner, buyer, price)
             await purchase.sync()
             console.log(purchase)
-            console.log(purchase.location)
 
-            const { data } = await network.post('/purchase', { location: purchase.location })
+            const { data } = await network.post('/purchase/mine', { location: purchase.location })
 
             const mine = await run.load(data.mine)
 
@@ -163,7 +169,30 @@ const AuthProvider = ({ children }) => {
 
     }
 
+    const createPurchaseGame = async (row: number, col: number) => {
+        try {
 
+            await gameFactoryJig.sync()
+            const buyer = run.owner.pubkey
+            const owner = gameFactoryJig.owner
+            const price = gameFactoryJig.priceSatoshis
+
+            const purchase = new Purchase(owner, buyer, price)
+            await purchase.sync()
+            console.log(purchase)
+
+            const { data } = await network.post('/purchase/game', { row, col, location: purchase.location })
+
+            // const game = await run.load(data.game)
+
+            // console.log('game', game)
+            return data.grid // grid
+
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
 
     return (
         <AuthContext.Provider value={{
@@ -177,7 +206,9 @@ const AuthProvider = ({ children }) => {
             purse,
             run,
             mineFactoryJig,
-            createPurchase
+            gameFactoryJig,
+            createPurchaseMine,
+            createPurchaseGame
             // _purchase,
             // _mine
         }}>

@@ -7,8 +7,9 @@ const style = {}
 const Login = () => {
 
 
-    const { balance, email: loggedInEmail, isAuthenticated, authenticate, deauthenticate } = useContext(AuthContext)
+    const { balance, refreshBalance, email: loggedInEmail, isAuthenticated, authenticate, deauthenticate } = useContext(AuthContext)
 
+    const [loading, setLoading] = useState<boolean>()
     const [email, setEmail] = useState<string>('mak.jacobsen@gmail.com')
     const [password, setPassword] = useState<string>('1234')
 
@@ -20,12 +21,20 @@ const Login = () => {
     return (
         isAuthenticated
             ? <div className="is-flex is-align-items-center is-justify-content-space-between">
-                    <div>
-                        <div className="tags has-addons mr-2">
-                            <span className="tag is-dark">Balance</span>
-                            <span className="tag is-success">{balance} BSV</span>
-                        </div>
-                    </div>
+                <div className="tags has-addons mr-2">
+                    <span className="tag is-dark">Balance</span>
+                    <span className="tag is-success">{balance} BSV</span>
+                    <span onClick={() => {
+                        setLoading(true)
+                        refreshBalance()
+                        setTimeout(() => {
+                            setLoading(false)
+                        }, 5000)
+                    }} className="tag is-light" style={{cursor: 'pointer'}}>
+                        {!loading ? 'Refresh' : 'Refreshing...'}
+                    </span>
+                </div>
+
                 <div className="is-flex is-align-items-center">
 
                     <p className="is-size-7 mr-2 has-text-grey-light">Logged in as <span className="has-text-white">{loggedInEmail}</span> </p>
@@ -36,6 +45,7 @@ const Login = () => {
 
             </div>
             : <form noValidate style={{ width: '300px' }}>
+
                 <div className="field">
                     <p className="control has-icons-left has-icons-right">
                         <input
@@ -67,6 +77,9 @@ const Login = () => {
                             <FontAwesomeIcon width="15" height="15" icon={["fas", "lock"]} />
                         </span>
                     </p>
+                </div>
+                <div className="is-flex mb-2">
+                    <p className="text-white is-size-7 has-text-left">BSV-Minesweeper provide non-custodial a web wallet that enables users to have a simple sign in. Please backup your email and password before proceeding.</p>
                 </div>
                 <div className="field is-grouped">
                     <div className="control">

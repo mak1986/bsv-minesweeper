@@ -34,6 +34,16 @@ const getInstanceLocations = async (name) => {
     return instances
 }
 
+const addGame = async (game) => {
+    const db = await getDb()
+
+    await db.collection('locations').insertOne({
+        type: 'instance',
+        name: 'gameLocation',
+        location: { [NEXT_PUBLIC_RUN_NETWORK]: game.location }
+    })
+}
+
 const addMine = async (mine) => {
     const db = await getDb()
 
@@ -58,6 +68,7 @@ module.exports = {
     getRun,
     getClassLocations,
     getInstanceLocations,
+    addGame,
     addMine,
     addPurchase
 }
