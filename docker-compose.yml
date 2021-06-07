@@ -32,6 +32,8 @@ services:
     build: .
     ports:
       - "3000:3000"
+    networks:
+      - bsv_minesweeper_network
 networks:
   bsv_minesweeper_network:
       name: bsv_minesweeper_network
