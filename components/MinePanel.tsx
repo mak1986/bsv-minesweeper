@@ -46,10 +46,10 @@ const MinePanel = () => {
 
             const _mines = []
             for (let location of data.locations) {
-                console.log('location', location)
+                // console.log('location', location)
                 const mine = await run.load(location)
                 await mine.sync()
-                console.log(mine)
+                // console.log(mine)
                 if (ownerPubkey === mine.owner.pubkeys[1]) {
                     const { id, wins, losses, enabled, satoshis, location } = mine
                     _mines.push({ id, wins, losses, enabled, satoshis, location })
