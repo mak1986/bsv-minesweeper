@@ -20,7 +20,7 @@ services:
   bsv_minesweeper_nginx_certbot:
     container_name: bsv_minesweeper_nginx_certbot
     image: certbot/certbot:latest
-    command: certonly --webroot --webroot-path=/var/www/certbot --email mak.jacobsen@gmail.com --agree-tos --no-eff-email -d bsv-minesweeper.makadev.com -d www.bsv-minesweeper.makadev.com -d # this will ony export 1 cert
+    command: certonly --webroot --webroot-path=/var/www/certbot --email mak.jacobsen@gmail.com --agree-tos --no-eff-email -d bsv-minesweeper.makadev.com -d www.bsv-minesweeper.makadev.com # this will ony export 1 cert
     volumes:
       - ./certbot/conf:/etc/letsencrypt
       - ./certbot/logs:/var/log/letsencrypt
