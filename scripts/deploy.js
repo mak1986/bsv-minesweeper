@@ -1,4 +1,4 @@
-const dotenv = require('dotenv').config({ path: '.env.local' })
+const dotenv = require('dotenv').config({ path: '.env.production.local' })
 
 const Run = require('run-sdk')
 
@@ -55,7 +55,7 @@ const deploy = async (run) => {
     const gameFactory = new GameFactory(server.owner.pubkey, 500000)
     await gameFactory.sync()
 
-    const mineFactory = new MineFactory(server.owner.pubkey, 500000)
+    const mineFactory = new MineFactory(server.owner.pubkey, 2000000)
     await mineFactory.sync()
 
     console.log('gameFactory', gameFactory)
@@ -90,7 +90,7 @@ const deploy = async (run) => {
 
 
 
-// deploy(getRun())
+deploy(getRun())
 
 module.exports = {
     getRun,

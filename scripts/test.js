@@ -1,4 +1,4 @@
-const dotenv = require('dotenv').config({path: '.env.local'})
+const dotenv = require('dotenv').config({path: '.env.production.local'})
 
 const Run = require('run-sdk')
 

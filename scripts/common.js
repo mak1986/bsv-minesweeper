@@ -1,4 +1,6 @@
-const dotenv = require('dotenv').config({path: '.env.local'})
+const Run = require('run-sdk')
+
+const dotenv = require('dotenv').config({path: '.env.production.local'})
 
 const outputBalance = async (label, run) => {
     console.log(label, await run.purse.balance())
@@ -6,7 +8,7 @@ const outputBalance = async (label, run) => {
 
 const getRun = () => {
 
-    const network = 'test'
+    const network = dotenv.parsed.NEXT_PUBLIC_RUN_NETWORK
 
     return {
         client: new Run({

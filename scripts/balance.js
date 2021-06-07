@@ -1,4 +1,3 @@
-const Run = require('run-sdk')
 
 const { outputBalance } = require('./common')
 const { getRun } = require('./deploy')
