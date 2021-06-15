@@ -31,7 +31,11 @@ export default function Home() {
         <div className="columns">
           <div className="column">
 
-            <h1>BETA | BSV-Minesweeper</h1>
+            <div className="is-flex is-align-items-center is-justify-content-center">
+              <img width="65" height="" src="/Bomb_B_logo.jpg" />
+              <h1>BSV-Minesweeper</h1>
+
+            </div>
             {/* <p className="is-size-7"><span className="has-text-grey">Topup from: </span><a className="has-text-grey has-text-weight-semibold" style={{textDecoration: 'underline'}} href="https://faucet.bitcoincloud.net" target="_blank">https://faucet.bitcoincloud.net</a> </p> */}
           </div>
         </div>
