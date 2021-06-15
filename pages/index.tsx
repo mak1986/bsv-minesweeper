@@ -17,8 +17,8 @@ export default function Home() {
       <div className="container">
 
         <Head>
-          <title>BSV Minesweeper</title>
-          <meta name="description" content="BSV Minesweeper" />
+          <title>Satoblast</title>
+          <meta name="description" content="Satoblast" />
           <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
           <link rel="icon" href="/favicon.ico" />
           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.2/css/bulma.min.css" />
@@ -33,7 +33,7 @@ export default function Home() {
 
             <div className="is-flex is-align-items-center is-justify-content-center">
               <img width="65" height="" src="/Bomb_B_logo.jpg" />
-              <h1>BSV-Minesweeper</h1>
+              <h1>Satoblast</h1>
 
             </div>
             {/* <p className="is-size-7"><span className="has-text-grey">Topup from: </span><a className="has-text-grey has-text-weight-semibold" style={{textDecoration: 'underline'}} href="https://faucet.bitcoincloud.net" target="_blank">https://faucet.bitcoincloud.net</a> </p> */}
